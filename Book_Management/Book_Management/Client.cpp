@@ -45,10 +45,7 @@ bool Client::emptyRentBooks(int _bookId) { // 책 반환 시 고객 도서 내역에서 삭제
 			break;
 		}
 	}
-	if (emptyId == -1) { // 번호와 같은 도서가 없으면
-		cout << "                                            잘못된 입력입니다.\n";
-		return false;
-	}
+	if (emptyId == -1) return false; // 번호와 같은 도서가 없으면		
 	else {
 		rentBooks.erase(rentBooks.begin() + emptyId);
 		return true;

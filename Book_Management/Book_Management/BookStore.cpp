@@ -2,7 +2,7 @@
 #include <iostream>  
 #include <iomanip>
 using namespace std;
-BookStore* BookStore::instance = nullptr; 
+BookStore* BookStore::instance = nullptr; // 싱글톤
 BookStore::BookStore(){}
 BookStore::~BookStore(){}
 void BookStore::addBook(const Book& book) {
@@ -87,7 +87,6 @@ void BookStore::rentBook(Client& client) { // 도서 대여
 		}
 		else if (books[rentNumber - 1].getBookState() == "대여 불가") { // 대여 불가 시
 			cout << "                                            현재 대여 중이므로 대여할 수 없습니다.\n";
-			break;
 		}
 	}
 }
@@ -106,16 +105,29 @@ void BookStore::returnBook(Client& client) { // 도서 반납
 					break;
 				}
 			}
+			cout << "                                            정상적으로 반납되었습니다.\n";
 			break;
 		}
+		else cout << "                                            잘못된 입력입니다.\n";
 	}
 }
 bool BookStore::widthDraw(Client& client) { // 회원 탈퇴
 	int clientsSize = clients.size();
 	int widthDrawId;
+	char isReal;
 	if (client.getRentBooksSize() > 0) { // 대여 중인 도서가 있으면
 		cout << "                                            대여 중인 도서가 있으므로 탈퇴할 수 없습니다.\n";
 		return false;
+	}
+	while (true) {
+		cout << "                                            정말 탈퇴하시겠습니까?(Y, N) : ";
+		cin >> isReal;
+		if (isReal == 'Y' || isReal == 'y') break;
+		else if (isReal == 'N' || isReal == 'n') {
+			cout << "                                            탈퇴를 취소하였습니다.\n";
+			return false;
+		}
+		else cout << "                                            잘못된 입력입니다.\n";
 	}
 	for (int i = 0; i < clientsSize; i++) { 
 		if (client.getClientId() == clients[i].getClientId()) {
